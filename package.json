@@ -1,0 +1,26 @@
+{
+  "name": "enviroquest-frontend-typescipt",
+  "version": "1.0.0",
+  "description": "Enviroquest-Frontend-Typescipt",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iainmon/Enviroquest-Frontend-Typescipt.git"
+  },
+  "author": "Iain Moncrief",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Iainmon/Enviroquest-Frontend-Typescipt/issues"
+  },
+  "homepage": "https://github.com/Iainmon/Enviroquest-Frontend-Typescipt#readme",
+  "dependencies": {
+    "@types/jspdf": "^1.3.0",
+    "ejs-loader": "^0.3.3"
+  }
+}

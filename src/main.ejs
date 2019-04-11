@@ -1,0 +1,212 @@
+
+<div class="col-sm-12">
+    <div class="list-group" style="margin-bottom: 10px">
+
+        <h3 class="text-center">
+            Report Information
+        </h3>
+
+        <div class="form-group row">
+            <label for="report-description" class="col-2 col-form-label">Report Description</label>
+            <div class="col-10">
+                <input class="form-control" type="text" id="report-description" value="<%= reportHeaderInformation.description %>"
+                       required>
+                <small id="descriptionHelp" class="form-text text-muted">
+                    This field is only for reference, and will not show up on the document.
+                </small>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="manual-calculations" class="col-2 col-form-label">
+                Override Calculations
+            </label>
+            <div class="col-10">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input"
+                           id="manual-calculations" <%= (reportHeaderInformation.overridecalculations) ? 'checked' : '' %>>
+                    <label class="form-check-label" for="manual-calculations">
+                        Should the total values be entered manually?
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="analyst-name" class="col-2 col-form-label">
+                Analyst
+            </label>
+            <div class="col-8">
+                <select class="form-control" id="analyst-name">
+                    <option>-</option>
+                    <% reportHeaderInformation.analysts.forEach( (analyst) => { %>
+                        <option<%= (reportHeaderInformation.analyst == analyst) ? ' selected' : '' %>><%= analyst %></option>
+                    <% }); %>
+                </select>
+                <small class="form-text text-muted">
+                    Select the analyst that analysed the sample.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="manual-calculations" class="col-2 col-form-label">
+                Date
+            </label>
+            <div class="col-8">
+                <input class="form-control" type="date" id="report-date"
+                       value="<%= (reportHeaderInformation.reportDate) ? reportHeaderInformation.reportDate : '' %>" required>
+                <small class="form-text text-muted">
+                    Analysis Date
+                </small>
+            </div>
+        </div>
+
+
+
+        <hr>
+
+        <h3 class="text-center">
+            Report Samples
+        </h3>
+
+        <% if (!(samples.length < 1)) { %>
+        <h6 class="text-center">
+             Sample count: <%= samples.length %>
+        </h6>
+        <% } %>
+
+        <!--<p class="inline">
+            <button class="btn btn-outline-info" onclick="proc.runcalcs();">Re-Run Calculations</button>
+        </p>-->
+
+        <% if (samples.length < 1) { %>
+        <p class="text-center">
+            This report has no samples. Would you may create one.
+        </p>
+        <% } else { %>
+
+        <% for (let i = 0; i < samples.length; i++) { %>
+        <div class="list-group-item flex-column align-items-start"
+             style="margin-bottom: 10px">
+
+             <div class="form-group row">
+             <label for="<%= i %>-sample-number" class="col-2 col-form-label">Sample Number</label>
+             <div class="col-2">
+                 <input class="form-control" type="text" id="<%= i %>-sample-number"
+                        value="<%= (samples[i].sampleNumber) ? samples[i].sampleNumber : 'SAMPLENUMBER' %>"
+                        required>
+                 <small class="form-text text-muted">
+                     A unique number for this sample.
+                 </small>
+             </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="<%= i %>-sample-location" class="col-2 col-form-label">Sample Location</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" id="<%= i %>-sample-location"
+                           value="<%= (samples[i].location) ? samples[i].location : 'New Sample Location.' %>"
+                           required>
+                    <small class="form-text text-muted">
+                        A description of where the sample was taken.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="<%= i %>-sample-times" class="col-2 col-form-label">Sample Times</label>
+                <div class="col-10" id="<%= i %>-sample-times">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <input class="form-control" type="datetime-local" id="<%= i %>-sample-start-time"
+                                   value="<%= (samples[i].startTime) ? samples[i].startTime.toISOString().substring(0, 16) : '' %>"
+                                   required>
+                            <small class="form-text text-muted">
+                                Sample Start Time
+                            </small>
+                        </div>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="datetime-local" id="<%= i %>-sample-end-time"
+                                   value="<%= (samples[i].endTime) ? samples[i].endTime.toISOString().substring(0, 16) : '' %>" required>
+                            <small class="form-text text-muted">
+                                Sample End Time
+                            </small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control is-valid" type="number" id="<%= i %>-sample-total-time"
+                                   value="<%= (samples[i].totalTime) ? samples[i].totalTime : '' %>"
+                                   required>
+                            <small class="form-text text-muted">
+                                Sample Total Time (minutes)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="<%= i %>-sample-calibration" class="col-2 col-form-label">Calibration and Volume</label>
+                <div class="col-10" id="<%= i %>-sample-calibration">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input class="form-control" type="number" id="<%= i %>-sample-start-calibration"
+                                   value="<%= (samples[i].startingCalibration) ? samples[i].startingCalibration : '' %>"
+                                   required>
+                            <small class="form-text text-muted">
+                                Starting Sample Calibration
+                            </small>
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="number" id="<%= i %>-sample-end-calibration"
+                                   value="<%= (samples[i].endingCalibration) ? samples[i].endingCalibration : '' %>" required>
+                            <small class="form-text text-muted">
+                                Ending Sample Calibration
+                            </small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control is-valid" type="number" id="<%= i %>-sample-average-calibration"
+                                   value="<%= (samples[i].averageCalibration) ? samples[i].averageCalibration : '' %>"
+                                   required>
+                            <small class="form-text text-muted">
+                                Average Calibration (lpm)
+                            </small>
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control is-valid" type="number" id="<%= i %>-sample-total-volume"
+                                   value="<%= (samples[i].totalVolume) ? samples[i].totalVolume : '' %>"
+                                   required>
+                            <small class="form-text text-muted">
+                                Total Volume (liters)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="<%= i %>-sample-results" class="col-2 col-form-label">Fiber Yield</label>
+                <div class="col-10" id="<%= i %>-sample-results">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="<%= i %>-sample-fiber-yield"
+                                   value="<%= samples[i].getFibersAndFields() %>" required>
+                            <small class="form-text text-muted">
+                                Fiber Yield
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <% } %>
+        <% } %>
+
+    </div>
+</div>
+
